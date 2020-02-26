@@ -57,11 +57,34 @@ public class CharacterControl : MonoBehaviour
         rightHandDetector = GetComponentInChildren<RightHandDetector>(true);
 
         SetRagdoll();
+
     }
 
     void Start()
     {
-      
+
+        //BoxCollider GroundDetector = GetComponentInChildren<BoxCollider>();
+
+        ////- 生成到局部坐标轴 float参数
+        //float bottom = GroundDetector.bounds.center.y - GroundDetector.bounds.extents.y;
+        //float top = GroundDetector.bounds.center.y + GroundDetector.bounds.extents.y;
+        //float front = GroundDetector.bounds.center.z + GroundDetector.bounds.extents.z;
+        //float back = GroundDetector.bounds.center.z - GroundDetector.bounds.extents.z;
+        //Debug.Log("bottom:" + bottom + "   top:" + top + "   front:" + front + "   back:" + back);
+
+
+
+        ////生成到底部
+        //Vector3 bottom2front = new Vector3(0, bottom, front); Debug.LogError("bottom2front:" + bottom2front); //bottom2front = transform.TransformPoint(bottom2front);
+        //Vector3 bottom2back = new Vector3(0, bottom, back); Debug.LogError("bottom2back:" + bottom2back); //bottom2back = transform.TransformPoint(bottom2back);
+
+        //GameObject DetectorSphere = new GameObject("sphere");
+        //DetectorSphere.transform.position = Vector3.zero;
+        //Transform b2f = Instantiate(DetectorSphere, bottom2front, Quaternion.identity).transform;
+        //Transform b2b = Instantiate(DetectorSphere, bottom2back, Quaternion.identity).transform;
+
+        //b2f.SetParent(transform, false);
+        //b2b.SetParent(transform, false);
     }
 
 

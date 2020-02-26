@@ -67,40 +67,40 @@ public class OnGroundDetecter : MonoBehaviour
     {
         //* Collider.bounds.center 是基于世界坐标轴 *
 
-        //- 生成到局部坐标轴 float参数
+        //- 所以,生成的参数.都是世界坐标参数
         float bottom = GroundDetector.bounds.center.y - GroundDetector.bounds.extents.y;
         float top = GroundDetector.bounds.center.y + GroundDetector.bounds.extents.y;
         float front = GroundDetector.bounds.center.z + GroundDetector.bounds.extents.z;
         float back = GroundDetector.bounds.center.z - GroundDetector.bounds.extents.z;
+
         Debug.Log("bottom:" + bottom + "   top:" + top + "   front:" + front + "   back:" + back);
 
-        //Debug.LogError("bottom:" + bottom + " #top:" + top + " #front:" + front + " #back:" + back);
+
         //生成到底部
-        Vector3 bottom2front = new Vector3(front, bottom, 0); bottom2front = transform.TransformPoint(bottom2front);
-        Vector3 bottom2back = new Vector3(back, bottom, 0); bottom2back = transform.TransformPoint(bottom2back);
+        Vector3 bottom2front = new Vector3(transform.position.x, bottom, front);
+        Vector3 bottom2back = new Vector3(transform.position.x, bottom, back);
         //已sec全长,去生成6个检测球
-        Vector3 norDir = (bottom2front - bottom2back).normalized;
-        float sec = (bottom2front - bottom2back).magnitude;
+        Vector3 norDir = (bottom2front - bottom2back).normalized;   //方向
+        float sec = (bottom2front - bottom2back).magnitude;         //大小
         Transform bottomContainer = new GameObject("bottomContainer").transform;
-        bottomContainer.SetParent(GroundDetector.transform, true);
+        bottomContainer.SetParent(GroundDetector.transform,true); //保持,原有世界坐标轴.
         for (int i = 0; i <= 5; i++)
         {
             Vector3 tempDir = (sec / 5) * i * norDir;
             Vector3 pos = bottom2back + tempDir;
-            //pos = transform.TransformDirection(pos);
             GameObject sphere = Instantiate(DetectorSphere, pos, Quaternion.identity);
-            sphere.transform.SetParent(bottomContainer);
+            sphere.transform.SetParent(bottomContainer, true);   //保持,原有世界坐标轴.
             detectorSpheres_Bottom.Add(sphere);
         }
 
         //生成到前面 
-        Vector3 front2up = new Vector3(front + fron2offset, top, 0);
-        Vector3 front2bottom = new Vector3(front + fron2offset, bottom, 0);
+        Vector3 front2up = new Vector3(transform.position.x, top, front);
+        Vector3 front2bottom = new Vector3(transform.position.x, bottom, front);
         //已sec全长,去生成6个检测球
         norDir = (front2up - front2bottom).normalized; //(方向:从下往上)
         sec = (front2up - front2bottom).magnitude;
         Transform frontContainer = new GameObject("frontContainer").transform;
-        frontContainer.SetParent(GroundDetector.transform, false);
+        frontContainer.SetParent(GroundDetector.transform, true);
         for (int i = 0; i <= 5; i++)
         {
             Vector3 tempDir = (sec / 5) * i * norDir;
@@ -109,6 +109,7 @@ public class OnGroundDetecter : MonoBehaviour
             sphere.transform.SetParent(frontContainer, true);
             detectorSpheres_Front.Add(sphere);
         }
+
     }
 
     /// <summary>
